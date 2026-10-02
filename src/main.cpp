@@ -2,10 +2,11 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
-#include <Adafruit_BMP280.h>
+#include <Adafruit_BME280.h>
 
 //Global variables
-Adafruit_BMP280 bmp;
+Adafruit_BME280 bme;
+float temperature;
 
 void setup() {
   Serial.begin(115200);
@@ -13,17 +14,24 @@ void setup() {
 
   // BMP280 code
   Wire.begin();
- 
-  if(bmp.begin(Wire.begin())) {
-    Serial.println("BMP280 Found");
+  
+  if(bme.begin(0x76)) {
+    Serial.println("BME280 Found");
   }else {
-    Serial.println("BMP280 Not Found");
+    Serial.println("BME280 Not Found");
   }
 	// LED code
 	// Wi-Fi code
 	// Routes
 	// Server start
 }
-void loop()
-{
+void loop() {
+  temperature = bme.readTemperature();
+ 
+  Serial.print("Temperature: ");
+  Serial.print(temperature);
+  Serial.println(" C");
+ 
+  delay(1000);
+
 }
